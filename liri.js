@@ -1,4 +1,3 @@
-
 require('dotenv').config();
 
 // Used to access Twitter keys in local file, keys.js.
@@ -17,7 +16,11 @@ var Spotify = require("node-spotify-api");
 
 // NPM module used to access OMDB API.
 
-var request = require("request");
+// var omdb = require("omdb-client");
+
+var omdb = require("request");
+
+// var OMDBClient = require('omdb-api-client');
 
 // NPM module used to read the random.txt file.
 
@@ -29,7 +32,7 @@ var filename = './log.txt';
 
 // NPM module used for logging solution.
 
-var log = require('simple-node-logger').createSimpleFileLogger( filename );
+var log = require('simple-node-logger').createSimpleFileLogger(filename);
 
 // All log information printed to log.txt.
 
@@ -67,70 +70,69 @@ function doSomething(action, argument) {
 
 		// Gets list of tweets.
 
-		case "my-tweets": 
+		case "my-tweets":
 
-		getMyTweetFeeds();
+			getMyTweetFeeds();
 
-		break;
+			break;
 
-		// Gets song information.
+			// Gets song information.
 
 		case "spotify-this-song":
 
-	
-		// First gets song title argument.
+			// First gets song title argument.
 
-		var songTitle = argument;
+			var songTitle = argument;
 
-		// If no song title provided, defaults to specific song.
+			// If no song title provided, defaults to specific song.
 
-		if (songTitle === "") {
+			if (songTitle === "") {
 
-			lookupSpecificSong();
+				lookupSpecificSong();
 
-		// Else looks up song based on song title.
+				// Else looks up song based on song title.
 
-		} else {
+			} else {
 
-			// Get song information from Spotify.
+				// Get song information from Spotify.
 
-			getSongInfo(songTitle);
+				getSongInfo(songTitle);
 
-		}
+			}
 
-		break;
+			break;
 
-		// Gets movie information.
+			// Gets movie information.
 
 		case "movie-this":
 
-		// First gets movie title argument.
+			// First gets movie title argument.
 
-		var movieTitle = argument;
+			var movieTitle = argument;
 
-		// If no movie title provided, defaults to specific movie.
+			// If no movie title provided, defaults to specific movie.
 
-		if (movieTitle === "") {
+			if (movieTitle == "") {
 
-			getMovieInfo("Mr. Nobody");
+				getMovieInfo("MR. NOBODY");
 
-		// Else looks up song based on movie title.
+				// Else looks up song based on movie title.
 
-		} else {
+			} else {
 
-			getMovieInfo(movieTitle);
+				getMovieInfo(movieTitle);
 
-		}
+			}
 
-		break;
+			break;
 
-		// Gets text inside file, and uses it to do something.
+			// Gets text inside file, and uses it to do something.
 
-		case "do-what-it-says": 
+		case "do-what-it-says":
 
-		doWhatItSays();
+			doWhatItSays();
 
-		break;
+			break;
 
 	}
 
@@ -150,7 +152,7 @@ function getThirdArgument() {
 
 
 	// Loops through words in node, filename argument
-	
+
 	// and querry
 
 	for (var i = 2; i < argumentArray.length; i++) {
@@ -173,37 +175,41 @@ function getMyTweetFeeds() {
 
 	var client = new Twitter(requestCredentials.twitter);
 
+
 	// Search parameters includes my tweets up to last 20 tweets;
 
-	var params = {screen_name: '@powusu6128', count: 20};
+	var params = {
+		screen_name: '@powusu6128',
+		count: 20
+	};
 
 
 	// Shows up to last 20 tweets and when created in terminal.
 
-	client.get('statuses/user_timeline', params, function(error, tweets, response) {
-		console.log("tweets:",tweets);
+	client.get('statuses/user_timeline', params, function (error, tweets, response) {
+		console.log("tweets:", tweets);
 
-	  if (!error) {
+		if (!error) {
 
-	  	// Loops through tweets and prints out tweet text and creation date.
+			// Loops through tweets and prints out tweet text and creation date.
 
-	  	for (var i = 0; i < tweets.length; i++) {
+			for (var i = 0; i < tweets.length; i++) {
 
-	  		var twittMessage = tweets[i].text;
+				var twittMessage = tweets[i].text;
 
-	  		logOutput("Tweet Text: " + twittMessage);
+				logOutput("Tweet Text: " + twittMessage);
 
-	  		var tweetCreationDate = tweets[i].created_at;
+				var tweetCreationDate = tweets[i].created_at;
 
-	  		logOutput("Tweet Creation Date: " + tweetCreationDate);
+				logOutput("Tweet Creation Date: " + tweetCreationDate);
 
-	  	}
+			}
 
-	  } else {
+		} else {
 
-	  	logOutput(error);
+			logOutput(error);
 
-	  }
+		}
 
 	});
 
@@ -211,17 +217,19 @@ function getMyTweetFeeds() {
 
 // Calls Spotify API to retrieve song information for song title.
 
-
-
 function getSongInfo(songTitle) {
 	// keys to the spotify credentials
 	var spotify = new Spotify(requestCredentials.spotify);
 
 	// Calls Spotify API to retrieve a track.
 
-	spotify.search({type: 'track', query: songTitle}, function(err, data) {
-		console.log("spotify data:",data);
+	var param = {
+		type: 'track',
+		query: songTitle
+	}
 
+	spotify.search(param, function (err, data) {
+		
 		if (err) {
 
 			logOutput.error(err);
@@ -230,17 +238,7 @@ function getSongInfo(songTitle) {
 
 		}
 
-		/* The Spotify node module defaults to 20 no matter what.
-
-		Attempted to add a limit, which seems to do nothing.
-
-		Homework requirements suggest we should only return one song.
-
-		Used array properties to retrict songs returns.
-
-		There could very well be a better way to do this.
-
-		But it's as close to requirements I could get using Spotify module.
+		/* The Spotify node module defaults to 20 if data is valilable to pull no matter what.
 
 		*/
 
@@ -274,8 +272,6 @@ function getSongInfo(songTitle) {
 
 	});
 
-	
-
 }
 
 // When no song title provided, defaults to specific song, The Sign.
@@ -284,19 +280,20 @@ function lookupSpecificSong() {
 
 	// Calls Spotify API to retrieve a specific track, The Sign, Ace of Base.
 
-	var songDetails = {type:"track", id:""};
+	var songDetails = {
+		type: "track",
+		id: ""
+	};
 
-	spotify.lookup(songDetails, function(err, data) {
+	spotify.lookup(songDetails, function (err, data) {
 
 		if (err) {
 
-			logOutput.error(err);
+			logOutput(err);
 
-			return
+			return;
 
 		}
-
-
 
 		// Prints the artist, track name, preview url, and album name.
 
@@ -312,19 +309,6 @@ function lookupSpecificSong() {
 
 }
 
-function printDetails(){
-
-	logOutput("ArtistName: ", data.artists[0].name);
-
-	logOutput("Song: ", data.name);
-
-	logOutput("Spotify URL: ", data.preview_url);
-
-	logOutput("Album Name: ", data.album.name)
-
-}
-
-
 
 // Passes a query URL to OMDB to retrieve movie information for movie title.
 
@@ -334,50 +318,52 @@ function getMovieInfo(movieTitle) {
 
 	// Runs a request to the OMDB API with the movie specified.
 
-	var queryUrl = "http://www.omdbapi.com/?t=" + movieTitle + "&y=&plot=short&tomatoes=true&r=json";
+	var queryUrl = "http://www.omdbapi.com/?s=" + movieTitle + "&y=&plot=short&tomatoes=true&r=json&apikey=trilogy";
 
-	request(queryUrl, function(error, response, body) {
+	omdb(queryUrl, function (error, response, body) {
+		// console.log("Here",body)
 
-	  // If the request is successful...
+		if (error) {
+			console.log(error)
+		}
 
-	  if (!error && response.statusCode === 200) {
+		// If the request is successful...
 
-	    // Parses the body of the site and recovers movie info.
+		if (!error && response.statusCode === 200) {
 
-	    var movie = JSON.parse(body);
+			// Parses the body of the site and recovers movie info.
 
-	    // Prints out movie info form omdb server.
+			var movie = JSON.parse(body);
 
-	    logOutput("Movie Title: " + movie.Title);
+			// Prints out movie info form omdb server.
 
-	    logOutput("Release Year: " + movie.Year);
+			logOutput("Movie Title: " + movie.Title);
 
-	    logOutput("IMDB Rating: " + movie.imdbRating);
+			logOutput("Release Year: " + movie.Year);
 
-	    logOutput("Country Produced In: " + movie.Country);
+			logOutput("IMDB Rating: " + movie.imdbRating);
 
-	    logOutput("Language: " + movie.Language);
+			logOutput("Country Produced In: " + movie.Country);
 
-	    logOutput("Plot: " + movie.Plot);
+			logOutput("Language: " + movie.Language);
 
-	    logOutput("Actors: " + movie.Actors);
+			logOutput("Plot: " + movie.Plot);
 
+			logOutput("Actors: " + movie.Actors);
 
+			// Had to set to array value, as there seems to be a bug in API response,
 
-	    // Had to set to array value, as there seems to be a bug in API response,
+			// that always returns N/A for movie.tomatoRating.
 
-	    // that always returns N/A for movie.tomatoRating.
+			logOutput("Rotten Tomatoes Rating: " + movie.Ratings[2].Value);
 
-	    logOutput("Rotten Tomatoes Rating: " + movie.Ratings[2].Value);
+			logOutput("Rotten Tomatoes URL: " + movie.tomatoURL);
 
-	    logOutput("Rotten Tomatoes URL: " + movie.tomatoURL);
-
-	  }
+		}
 
 	});
 
 }
-
 
 
 // Uses fs node package to take the text inside random.txt,
@@ -386,8 +372,8 @@ function getMovieInfo(movieTitle) {
 
 function doWhatItSays() {
 
-	fs.readFile("random.txt", "utf8", function(err, data) {
-		console.log("l385 what is random:",data);
+	fs.readFile("random.txt", "utf8", function (err, data) {
+		
 		if (err) {
 
 			logOutput(err);
@@ -401,8 +387,6 @@ function doWhatItSays() {
 			// Sets action to first item in array.
 
 			action = randomArray[0];
-
-
 
 			// Sets optional third argument to second item in array.
 
@@ -418,8 +402,6 @@ function doWhatItSays() {
 	});
 
 }
-
-
 
 // Logs data to the terminal and output to a text file.
 

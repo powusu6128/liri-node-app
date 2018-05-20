@@ -1,0 +1,20 @@
+19:52:26.730 INFO  Artist(s): El Freeze 
+19:52:26.730 INFO  Song: Get This Song on Spotify 
+19:52:26.730 INFO  Spotify Preview URL: https://p.scdn.co/mp3-preview/3c7c65d8c0e7ba890ae68d590dcc3be69e2bab50?cid=62a554efae79473e9b07e86261562e9d 
+19:52:26.730 INFO  Album Name: Get This Song on Spotify 
+19:53:30.578 INFO  Tweet Text: How is the world cup going? How are Africa teams preparing for the upcoming game? 
+19:53:30.578 INFO  Tweet Creation Date: Fri May 18 01:16:54 +0000 2018 
+22:16:31.874 INFO  Tweet Text: How is the world cup going? How are Africa teams preparing for the upcoming game? 
+22:16:31.874 INFO  Tweet Creation Date: Fri May 18 01:16:54 +0000 2018 
+22:39:50.886 INFO  Tweet Text: How is the world cup going? How are Africa teams preparing for the upcoming game? 
+22:39:50.886 INFO  Tweet Creation Date: Fri May 18 01:16:54 +0000 2018 
+03:04:05.713 INFO  Tweet Text: How is the world cup going? How are Africa teams preparing for the upcoming game? 
+03:04:05.713 INFO  Tweet Creation Date: Fri May 18 01:16:54 +0000 2018 
+03:04:42.690 INFO  Artist(s): El Freeze 
+03:04:42.690 INFO  Song: Get This Song on Spotify 
+03:04:42.690 INFO  Spotify Preview URL: https://p.scdn.co/mp3-preview/3c7c65d8c0e7ba890ae68d590dcc3be69e2bab50?cid=62a554efae79473e9b07e86261562e9d 
+03:04:42.690 INFO  Album Name: Get This Song on Spotify 
+10:02:02.622 INFO  Artist(s): El Freeze 
+10:02:02.622 INFO  Song: Get This Song on Spotify 
+10:02:02.622 INFO  Spotify Preview URL: https://p.scdn.co/mp3-preview/3c7c65d8c0e7ba890ae68d590dcc3be69e2bab50?cid=62a554efae79473e9b07e86261562e9d 
+10:02:02.622 INFO  Album Name: Get This Song on Spotify 
