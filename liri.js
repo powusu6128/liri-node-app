@@ -64,7 +64,7 @@ doSomething(action, argument);
 
 function doSomething(action, argument) {
 
-	argument = getThirdArgument();
+	if (!argument) argument = getThirdArgument();
 
 	switch (action) {
 
